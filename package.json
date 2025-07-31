@@ -1,0 +1,26 @@
+{
+  "name": "voteitout",
+  "version": "1.0.0",
+  "description": "VoteItOut is a fun, knockout-style voting platform for movies, songs, sports, or plans.",
+  "type": "module",
+  "main": "index.js",
+"scripts": {
+  "test": "mocha --require @babel/register --require ./test/test_helper.js --recursive",
+  "test:watch": "npm run test -- --watch"
+},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "@babel/register": "^7.27.1",
+    "chai": "^5.2.1",
+    "mocha": "^11.7.1"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  }
+}
