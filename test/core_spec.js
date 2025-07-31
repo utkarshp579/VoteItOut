@@ -6,8 +6,7 @@ const { expect } = chai;
 
 // Import Immutable.js and core functions under test
 import { List, Map } from "immutable";
-import { setEntries, next } from "../src/core.js";
-
+import { setEntries, next, vote } from "../src/core.js";
 
 // 🧪 Test suite for application logic
 describe("application logic", () => {
@@ -50,6 +49,57 @@ describe("application logic", () => {
             pair: List.of("Trainspotting", "28 Days Later"),
           }),
           entries: List.of("Sunshine"),
+        })
+      );
+    });
+  });
+
+  // 🧪 Test group for vote function
+  describe("vote", () => {
+    it("creates a tally for the voted entry", () => { // test 1 --> Is for new voted , tally is being created or not
+      const state = Map({
+        vote: Map({
+          pair: List.of("Trainspotting", "28 Days Later"),
+        }),
+        entries: List(),
+      });
+
+      const nextState = vote(state, "Trainspotting");
+      expect(nextState).to.equal(
+        Map({
+          vote: Map({
+            pair: List.of("Trainspotting", "28 Days Later"),
+            tally: Map({
+              Trainspotting: 1,
+            }),
+          }),
+          entries: List(),
+        })
+      );
+    });
+
+    it("adds to existing tally for the voted entry", () => { // Testing 2 :- Is already voted is increasing or Not
+      const state = Map({
+        vote: Map({
+          pair: List.of("Trainspotting", "28 Days Later"),
+          tally: Map({
+            Trainspotting: 3,
+            "28 Days Later": 2,
+          }),
+        }),
+        entries: List(),
+      });
+      const nextState = vote(state, "Trainspotting");
+      expect(nextState).to.equal(
+        Map({
+          vote: Map({
+            pair: List.of("Trainspotting", "28 Days Later"),
+            tally: Map({
+              Trainspotting: 4,
+              "28 Days Later": 2,
+            }),
+          }),
+          entries: List(),
         })
       );
     });
