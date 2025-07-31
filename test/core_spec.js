@@ -4,9 +4,10 @@ import chaiImmutable from "chai-immutable";
 chai.use(chaiImmutable);
 const { expect } = chai;
 
-// Import Immutable.js and core function under test
+// Import Immutable.js and core functions under test
 import { List, Map } from "immutable";
-import { setEntries } from "../src/core.js";
+import { setEntries, next } from "../src/core.js";
+
 
 // 🧪 Test suite for application logic
 describe("application logic", () => {
@@ -32,6 +33,23 @@ describe("application logic", () => {
       expect(nextState).to.equal(
         Map({
           entries: List.of("Trainspotting", "28 Days Later"), // expected output
+        })
+      );
+    });
+  });
+
+  describe("next", () => {
+    it("takes the next two entries under vote", () => {
+      const state = Map({
+        entries: List.of("Trainspotting", "28 Days Later", "Sunshine"),
+      });
+      const nextState = next(state);
+      expect(nextState).to.equal(
+        Map({
+          vote: Map({
+            pair: List.of("Trainspotting", "28 Days Later"),
+          }),
+          entries: List.of("Sunshine"),
         })
       );
     });
