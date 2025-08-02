@@ -16,12 +16,19 @@ function getWinners(vote) {
 
 export function next(state) {
   const entries = state.get("entries").concat(getWinners(state.get("vote")));
-  const pair = entries.take(2);
-  const remaining = entries.skip(2);
-  return state.merge({
-    vote: Map({ pair }),
-    entries: remaining,
-  });
+  if (entries.size === 1) {
+    return state
+      .remove("vote")
+      .remove("entries")
+      .set("winner", entries.first());
+  } else {
+    const pair = entries.take(2);
+    const remaining = entries.skip(2);
+    return state.merge({
+      vote: Map({ pair }),
+      entries: remaining,
+    });
+  }
 }
 
 export function vote(state, entry) {
