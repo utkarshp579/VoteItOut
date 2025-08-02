@@ -5,14 +5,14 @@ chai.use(chaiImmutable);
 const { expect } = chai;
 
 // Import Immutable.js and core functions under test
-import { List, Map } from "immutable";
+import { List, Map, fromJS } from "immutable";
 import { setEntries, next, vote } from "../src/core.js";
 
-// 🧪 Test suite for application logic
+// Test suite for application logic
 describe("application logic", () => {
-  // 🧪 Test group for setEntries function
+  // Test group for setEntries function
   describe("setEntries", () => {
-    // ✅ Test case: accepts List and adds it to state
+    //  Test case: accepts List and adds it to state
     it("adds the entries to the state", () => {
       const state = Map(); // initial empty state
       const entries = List.of("Trainspotting", "28 Days Later"); // Immutable input
@@ -24,7 +24,7 @@ describe("application logic", () => {
       );
     });
 
-    // ✅ Test case: converts plain JS array to Immutable List before storing
+    //  Test case: converts plain JS array to Immutable List before storing
     it("converts to immutable", () => {
       const state = Map(); // initial state
       const entries = ["Trainspotting", "28 Days Later"]; // plain JS array input
@@ -117,54 +117,40 @@ describe("application logic", () => {
     });
   });
 
-  // 🧪 Test group for vote function
+  // Test group for vote function
+
   describe("vote", () => {
     it("creates a tally for the voted entry", () => {
-      // test 1 --> Is for new voted , tally is being created or not
-      const state = Map({
-        vote: Map({
-          pair: List.of("Trainspotting", "28 Days Later"),
-        }),
-        entries: List(),
+      const voteState = Map({
+        pair: List.of("Trainspotting", "28 Days Later"),
       });
-
-      const nextState = vote(state, "Trainspotting");
-      expect(nextState).to.equal(
-        Map({
-          vote: Map({
-            pair: List.of("Trainspotting", "28 Days Later"),
-            tally: Map({
-              Trainspotting: 1,
-            }),
-          }),
-          entries: List(),
+      const nextVoteState = vote(voteState, "Trainspotting");
+      expect(nextVoteState).to.equal(
+        fromJS({
+          pair: ["Trainspotting", "28 Days Later"],
+          tally: {
+            Trainspotting: 1,
+          },
         })
       );
     });
 
     it("adds to existing tally for the voted entry", () => {
-      // Testing 2 :- Is already voted is increasing or Not
-      const state = Map({
-        vote: Map({
-          pair: List.of("Trainspotting", "28 Days Later"),
-          tally: Map({
-            Trainspotting: 3,
-            "28 Days Later": 2,
-          }),
+      const voteState = Map({
+        pair: List.of("Trainspotting", "28 Days Later"),
+        tally: Map({
+          Trainspotting: 3,
+          "28 Days Later": 2,
         }),
-        entries: List(),
       });
-      const nextState = vote(state, "Trainspotting");
-      expect(nextState).to.equal(
-        Map({
-          vote: Map({
-            pair: List.of("Trainspotting", "28 Days Later"),
-            tally: Map({
-              Trainspotting: 4,
-              "28 Days Later": 2,
-            }),
-          }),
-          entries: List(),
+      const nextVoteState = vote(voteState, "Trainspotting");
+      expect(nextVoteState).to.equal(
+        fromJS({
+          pair: ["Trainspotting", "28 Days Later"],
+          tally: {
+            Trainspotting: 4,
+            "28 Days Later": 2,
+          },
         })
       );
     });
