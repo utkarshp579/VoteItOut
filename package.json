@@ -5,6 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "start": "npx babel-node index.js",
     "test": "mocha --require @babel/register --require ./test/test_helper.js --recursive",
     "test:watch": "npm run test -- --watch"
   },
@@ -12,7 +13,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/cli": "^7.28.0",
     "@babel/core": "^7.28.0",
+    "@babel/node": "^7.28.0",
     "@babel/preset-env": "^7.28.0",
     "@babel/register": "^7.27.1",
     "chai": "^4.3.7",
@@ -26,6 +29,7 @@
   },
   "dependencies": {
     "chai-immutable": "^2.1.0",
-    "redux": "^5.0.1"
+    "redux": "^5.0.1",
+    "socket.io": "^4.8.1"
   }
 }
